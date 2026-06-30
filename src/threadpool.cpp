@@ -125,17 +125,10 @@ void *ThreadPool::worker(void *arg)
         pool->busyNum++;
         pthread_mutex_unlock(&pool->mutexPool);
 
-        cout << "thread " << to_string(pthread_self()) << "start working..." << endl;
-
         if (task.function != nullptr)
         {
             task.function(task.arg);
         }
-
-        // delete task.arg;
-        // task.arg = nullptr;
-
-        cout << "thread " << to_string(pthread_self()) << "end working..." << endl;
 
         // 任务执行完
         pthread_mutex_lock(&pool->mutexPool);

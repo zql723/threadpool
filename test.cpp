@@ -5,10 +5,11 @@ using namespace std;
 
 void taskFunc(void *arg)
 {
-    int num = *(int *)arg;
-    cout << "thread " << pthread_self() << " is working, number = " << num << endl;
+    int num = *static_cast<int *>(arg);
+    cout << "thread" << static_cast<unsigned long>(pthread_self())
+         << " is working...  task number = " << num << endl;
     sleep(1);
-    delete (int *)arg;
+    delete static_cast<int *>(arg);
 }
 
 int main()
@@ -24,8 +25,7 @@ int main()
 
     sleep(20);
 
-    cout << "busy thread number = " << tp.getBusyNum() << endl;
-    cout << "alive thread number = " << tp.getAliveNum() << endl;
+    cout << "main thread exit..." << endl;
 
     return 0;
 }
