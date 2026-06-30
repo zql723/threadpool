@@ -2,7 +2,6 @@
 #define THREADPOOL_H
 
 #include <pthread.h>
-#include <queue>
 #include "taskqueue.h"
 
 // 线程池类
@@ -12,9 +11,13 @@ public:
     ThreadPool(int min, int max);
     ~ThreadPool();
 
+    ThreadPool(const ThreadPool &) = delete;
+    ThreadPool &operator=(const ThreadPool &) = delete;
+
 public:
     // 添加任务
     void addTask(Task task);
+    void addTask(callback func, void *arg);
 
     // 获取线程池中忙的线程数量
     int getBusyNum();
@@ -46,6 +49,7 @@ private:
 
     pthread_mutex_t mutexPool; // 线程池互斥锁
     pthread_cond_t notEmpty;   // 任务队列非空条件变量
+    pthread_cond_t allexit;    // 所有工作线程退出条件变量
 
     bool shutdown; // 销毁线程池？
 

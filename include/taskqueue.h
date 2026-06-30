@@ -2,7 +2,6 @@
 #define TASKQUEUE_H
 
 #include <queue>
-#include <pthread.h>
 
 using callback = void (*)(void *arg);
 
@@ -29,8 +28,8 @@ struct Task
 class TaskQueue
 {
 public:
-    TaskQueue();
-    ~TaskQueue();
+    TaskQueue() = default;
+    ~TaskQueue() = default;
 
 public:
     // 添加任务
@@ -45,6 +44,5 @@ public:
 
 private:
     std::queue<Task> m_taskQ;
-    pthread_mutex_t m_mutex;
 };
 #endif

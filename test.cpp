@@ -1,14 +1,23 @@
 #include "threadpool.h"
 #include <iostream>
 #include <unistd.h>
+#include <pthread.h>
 using namespace std;
+
+pthread_mutex_t printMutex = PTHREAD_MUTEX_INITIALIZER;
 
 void taskFunc(void *arg)
 {
     int num = *static_cast<int *>(arg);
-    cout << "thread" << static_cast<unsigned long>(pthread_self())
-         << " is working...  task number = " << num << endl;
-    sleep(1);
+    pthread_mutex_lock(&printMutex);
+    cout << "thread"
+         << static_cast<unsigned long>(pthread_self())
+         << " is working...  task number = "
+         << num
+         << endl;
+    pthread_mutex_unlock(&printMutex);
+
+    usleep(500000);
     delete static_cast<int *>(arg);
 }
 
